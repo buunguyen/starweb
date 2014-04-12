@@ -3,8 +3,8 @@ favicon = require('../lib/middleware/favicon')
 logger  = require('../lib/middleware/logger')
 app     = starweb()
 
-app.use(logger())
-app.use(favicon())
+app.use(app.logger())
+app.use(app.favicon('favicon.ico'))
 
 app.use(function *() {
   // html (todo: should really be text)
