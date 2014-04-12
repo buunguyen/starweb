@@ -1,0 +1,22 @@
+{
+  "name": "starweb",
+  "version": "0.0.0",
+  "description": "starweb =======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/buunguyen/starweb.git"
+  },
+  "author": "Buu Nguyen <buunguyen@gmail.com> (https://github.com/buunguyen)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buunguyen/starweb/issues"
+  },
+  "homepage": "https://github.com/buunguyen/starweb",
+  "dependencies": {
+    "starx": "~0.1.4"
+  }
+}
