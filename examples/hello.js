@@ -1,14 +1,15 @@
-starweb = require('../lib')
-favicon = require('../lib/middleware/favicon')
-logger  = require('../lib/middleware/logger')
+starweb = require('../lib/app')
 app     = starweb()
 
 app.use(app.logger())
 app.use(app.favicon('favicon.ico'))
 
 app.use(function *() {
-  // html (todo: should really be text)
+  // text
   this.body = 'hello, world'
+
+  // html
+  // this.body = '<em>hello, world</em>'
 
   // json
   // this.body = {
