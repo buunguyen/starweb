@@ -6,10 +6,13 @@ app.use(app.favicon('favicon.ico'))
 
 app.use(function *() {
   // text
-  this.body = 'hello, world'
+  // this.body = 'hello, world'
 
   // html
   // this.body = '<em>hello, world</em>'
+
+  // buffer
+  // this.body = new Buffer('download me')
 
   // json
   // this.body = {
@@ -18,8 +21,10 @@ app.use(function *() {
 
   // stream
   // this.body = require('fs').createReadStream(__filename)
+})
 
-  // todo: text, buffer
+app.error(function(err) {
+  console.error(err)
 })
 
 app.run(8000)
