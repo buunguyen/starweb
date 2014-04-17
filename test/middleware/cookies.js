@@ -36,4 +36,17 @@ describe('cookies middleware', function(){
       .set('cookie', 'name=value; name2  = value with space ')
       .expect(204, done)
   })
+
+  it('populates cookies object from JSON', function(done) {
+    app.use(function *() {
+      expect(this.cookies.lang.name).to.equal('js')
+      expect(this.cookies.lang.version).to.equal(1.7)
+      expect(this.cookies.framework.name).to.equal('starweb')
+      this.status = 204
+    })
+    request(app.run())
+      .get('/')
+      .set('cookie', 'lang={"name": "js","version": 1.7}; framework={"name": "starweb"}')
+      .expect(204, done)
+  })
 })

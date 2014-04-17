@@ -51,7 +51,7 @@ describe('context', function(){
       request(app.run())
         .get('/')
         .expect('set-cookie', 'name=value; Path=/; Expires=Tue, 15 Apr 2014 00:00:00 GMT', done)
-    })  
+    })
 
     it('sets cookie and parses expires as date object', function(done) {
       app.use(function *() {
@@ -62,6 +62,18 @@ describe('context', function(){
       request(app.run())
         .get('/')
         .expect('set-cookie', 'name=value; Path=/; Expires=Tue, 15 Apr 2014 00:00:00 GMT', done)
-    })  
+    })
+
+    it('sets JSON cookie', function(done) {
+      app.use(function *() {
+        this.cookie('lang', {
+          name: 'js',
+          version: '1.7' 
+        })
+      })
+      request(app.run())
+        .get('/')
+        .expect('set-cookie', 'lang={"name":"js","version":"1.7"}; Path=/', done)
+    })
   })
 })
