@@ -1,13 +1,11 @@
 starweb = require('../../lib/app')
 expect  = require('chai').expect
 assert  = require('chai').assert
-sinon   = require('sinon')
 request = require('supertest')
 
 describe('cookies middleware', function(){
-  var app, spy
+  var app
   beforeEach(function() {
-    spy = sinon.spy()
     app = starweb()
     app.use(app.cookies())
     app.error(function(err) {
@@ -18,11 +16,10 @@ describe('cookies middleware', function(){
   it('creates cookies object even when there is no cookie header', function(done) {
     app.use(function *() {
       expect(this.cookies).to.exist
-      this.status = 204
     })
     request(app.run())
       .get('/')
-      .expect(204, done)
+      .expect(200, done)
   })
 
   it('populates cookies object based on cookie header', function(done) {
