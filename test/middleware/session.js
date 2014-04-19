@@ -1,8 +1,10 @@
 starweb = require('../../lib/app')
+helper  = require('../helper')
 expect  = require('chai').expect
 assert  = require('chai').assert
 sinon   = require('sinon')
 request = require('supertest')
+starx   = require('starx')
 
 describe('session middleware', function(){
   var app
@@ -31,23 +33,60 @@ describe('session middleware', function(){
   })
 
   it('persists session for multiple request', function(done) {
-    var first = true
     app.use(function *() {
-      if (first) {
-        this.session.name = 'starweb'
-        first = false
-      } else {
-        expect(this.session.name).to.equal('starweb')
-      }
+      if (this.path === '/set') this.session.name = 'starweb'
+      else expect(this.session.name).to.equal('starweb')
     })
-    var server = app.run()
-    request(server)
-      .get('/')
-      .end(function(err, res) {
-        request(server)
-          .get('/')
-          .set('cookie', res.headers['set-cookie'])
-          .expect(200, done)
+
+    starx(function *() {    
+      var server = app.run()
+      var res = yield _req(server, '/set')
+      var cookie = res.headers['set-cookie'][0]
+
+      yield _req(server, '/get', {
+        sets: { cookie: cookie },
+        expects: 200
       })
+    })(done)
+  })
+
+  it('does not share session for different sid', function(done) {
+    app.use(function *() {
+      if (this.path === '/set') this.session.name = 'starweb'
+      else expect(this.session.name).to.not.exist
+    })
+
+    starx(function *() {    
+      var server = app.run()
+      yield _req(server, '/set')
+      
+      yield _req(server, '/get', {
+        sets: { cookie: 'sid=not exist' },
+        expects: 200
+      })
+    })(done)
+  })
+
+  it('destroys session', function(done) {
+    app.use(function *() {
+      if (this.path === '/set') this.session.name = 'starweb'
+      else if (this.path === '/del') this.session.destroy()
+      else expect(this.session.name).to.not.exist
+    })
+
+    starx(function *() {    
+      var server = app.run()
+      var res = yield _req(server, '/set')
+      var cookie = res.headers['set-cookie'][0]
+
+      yield _req(server, '/del', {
+        sets: { cookie: cookie }
+      })
+
+      yield _req(server, '/get', {
+        sets: { cookie: cookie },
+        expects: 200
+      })
+    })(done)
   })
 })
