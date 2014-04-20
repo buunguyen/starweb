@@ -2,14 +2,16 @@ starweb = require('../../lib/app')
 expect  = require('chai').expect
 assert  = require('chai').assert
 request = require('supertest')
+helper  = require('../helper')
+starx   = require('starx')
 
-describe('cookies middleware', function(){
+describe('Cookies middleware', function(){
   var app
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
     app.error(function(err) {
-      console.log(err)
+      console.log(err.stack)
     })
   })
 
@@ -45,5 +47,51 @@ describe('cookies middleware', function(){
       .get('/')
       .set('cookie', 'lang={"name": "js","version": 1.7}; framework={"name": "starweb"}')
       .expect(204, done)
+  })
+
+  describe('Signing', function() {
+    var app
+    beforeEach(function() {
+      app = starweb()
+      app.use(app.cookies('secret'))
+    })
+
+    it('parses signed cookie', function(done) {
+      app.use(function *() {
+        if (this.path === '/set') this.cookie('name', 'some value', { sign: true } )
+        else expect(this.signedCookies.name).to.equal('some value')
+      })
+      starx(function *() {
+        var server = app.run()
+        var res = yield YRequest.get(server, '/set')
+        var cookie = res.headers['set-cookie'][0]
+        yield YRequest.get(server, '/', {
+          set: { cookie: cookie },
+          expect: 200
+        })
+      })(done)
+    })
+
+    it('throws on attempt to tamper value or signature', function(done) {
+      app.use(function *() {
+        this.cookie('name', 'some value', { sign: true } )
+      })
+      starx(function *() {
+        var server = app.run()
+        var res = yield YRequest.get(server, '/')
+        var cookie = res.headers['set-cookie'][0]
+
+        yield YRequest.get(server, '/', {
+          set: { cookie: 'name=s:modified value.85OgNllnamzw6UN5OQoijneayzmaD/TZP2dDSUk8erg' },
+          expect: 400
+        })
+
+        yield YRequest.get(server, '/', {
+          set: { cookie: 'name=s:some value.modified signature' },
+          expect: 400
+        })
+      })(done)
+    })
+
   })
 })

@@ -6,7 +6,7 @@ sinon   = require('sinon')
 request = require('supertest')
 starx   = require('starx')
 
-describe('session middleware', function(){
+describe('Session middleware', function(){
   var app
 
   beforeEach(function() {
@@ -40,15 +40,26 @@ describe('session middleware', function(){
 
     starx(function *() {    
       var server = app.run()
-      var res = yield _req(server, '/set')
+      var res = yield YRequest.get(server, '/set')
       var cookie = res.headers['set-cookie'][0]
 
-      yield _req(server, '/get', {
-        sets: { cookie: cookie },
-        expects: 200
-      })
+      for (var i = 0; i < 10; i++)
+        yield YRequest.get(server, '/get', {
+          set    : { cookie: cookie },
+          expect : 200
+        })
     })(done)
   })
+
+  // it('prevents tampering sid', function(done) {
+  //   starx(function *() {    
+  //     var server = app.run()
+  //     yield YRequest.get(server, '/', {
+  //       set    : { cookie: 'sid=whatever' },
+  //       expect : 400
+  //     })
+  //   })(done)
+  // })
 
   it('does not share session for different sid', function(done) {
     app.use(function *() {
@@ -58,11 +69,11 @@ describe('session middleware', function(){
 
     starx(function *() {    
       var server = app.run()
-      yield _req(server, '/set')
-      
-      yield _req(server, '/get', {
-        sets: { cookie: 'sid=not exist' },
-        expects: 200
+      yield YRequest.get(server, '/set')
+
+      yield YRequest.get(server, '/get', {
+        set    : { cookie: 'sid=not exist' },
+        expect : 200
       })
     })(done)
   })
@@ -76,16 +87,16 @@ describe('session middleware', function(){
 
     starx(function *() {    
       var server = app.run()
-      var res = yield _req(server, '/set')
+      var res = yield YRequest.get(server, '/set')
       var cookie = res.headers['set-cookie'][0]
 
-      yield _req(server, '/del', {
-        sets: { cookie: cookie }
+      yield YRequest.get(server, '/del', {
+        set: { cookie: cookie }
       })
 
-      yield _req(server, '/get', {
-        sets: { cookie: cookie },
-        expects: 200
+      yield YRequest.get(server, '/get', {
+        set    : { cookie: cookie },
+        expect : 200
       })
     })(done)
   })

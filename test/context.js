@@ -4,10 +4,10 @@ assert  = require('chai').assert
 sinon   = require('sinon')
 request = require('supertest')
 
-describe('context', function(){
-  var app, spy
+describe('Context', function(){
+  var app
+
   beforeEach(function() {
-    spy = sinon.spy()
     app = starweb()
     app.use(app.cookies())
     app.error(function(err) {
@@ -15,7 +15,7 @@ describe('context', function(){
     })
   })
 
-  describe('cookie', function(done) {
+  describe('Cookie', function(done) {
     it('sets cookie', function(done) {
       app.use(function *() {
         this.cookie('name', 'some value')
@@ -25,7 +25,6 @@ describe('context', function(){
         .expect('set-cookie', 'name=some value; Path=/', done)
     })
 
-    // opts: { path: ..., domain: ..., expires: ...,  maxAge: ..., httpOnly: ..., secure: ... }
     it('sets cookie with options', function(done) {
       app.use(function *() {
         this.cookie('name', 'value', { 
@@ -74,6 +73,35 @@ describe('context', function(){
       request(app.run())
         .get('/')
         .expect('set-cookie', 'lang={"name":"js","version":"1.7"}; Path=/', done)
+    })
+
+    describe('Signing', function(done) {
+      beforeEach(function() {
+        app = starweb()
+        app.use(app.cookies('secret'))
+        app.error(function(err) {
+          console.log(err)
+        })
+      })
+
+      it('signs cookie', function(done) {
+        app.use(function *() {
+          this.cookie('name', 'some value', { sign: true } )
+        })
+        request(app.run())
+          .get('/')
+          .expect('set-cookie', 'name=s:some value.85OgNllnamzw6UN5OQoijneayzmaD/TZP2dDSUk8erg; Path=/', done)
+      })
+
+      it('signs JSON cookie', function(done) {
+        app.use(function *() {
+          this.cookie('lang', { name: 'js', version: '1.7' }, { sign: true } )
+        })
+        request(app.run())
+          .get('/')
+          .expect('set-cookie', 'lang=s:{"name":"js","version":"1.7"}.Hd1FF7rwvh3HoStR6vTiFIV4/SKSEk9kbD+Ti+SWZ4Q; Path=/', done)
+      })
+
     })
   })
 })
