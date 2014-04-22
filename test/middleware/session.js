@@ -11,7 +11,7 @@ describe('Session middleware', function(){
 
   beforeEach(function() {
     app = starweb()
-    app.use(app.cookies())
+    app.use(app.cookies('secret'))
     app.use(app.session())
     app.error(function(err) {
       console.log(err.stack)
@@ -25,6 +25,16 @@ describe('Session middleware', function(){
       .get('/')
       .expect(500, done)
   })
+
+  it('throws error if cookie secret is not provided', function(done) {
+    var _app = starweb()
+    _app.use(_app.cookies())
+    _app.use(_app.session())
+    request(_app.run())
+      .get('/')
+      .expect(500, done)
+  })
+
 
   it('does not throw if cookie middleware is used', function(done) {
     request(app.run())
@@ -50,16 +60,6 @@ describe('Session middleware', function(){
         })
     })(done)
   })
-
-  // it('prevents tampering sid', function(done) {
-  //   starx(function *() {    
-  //     var server = app.run()
-  //     yield YRequest.get(server, '/', {
-  //       set    : { cookie: 'sid=whatever' },
-  //       expect : 400
-  //     })
-  //   })(done)
-  // })
 
   it('does not share session for different sid', function(done) {
     app.use(function *() {
