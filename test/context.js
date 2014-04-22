@@ -10,8 +10,8 @@ describe('Context', function(){
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
-    app.error(function(err) {
-      console.log(err)
+    app.on('error', function(err) {
+      console.log(err.stack)
     })
   })
 
@@ -79,8 +79,8 @@ describe('Context', function(){
       beforeEach(function() {
         app = starweb()
         app.use(app.cookies('secret'))
-        app.error(function(err) {
-          console.log(err)
+        app.on('error', function(err) {
+          console.log(err.stack)
         })
       })
 
@@ -101,7 +101,6 @@ describe('Context', function(){
           .get('/')
           .expect('set-cookie', 'lang=s:{"name":"js","version":"1.7"}.Hd1FF7rwvh3HoStR6vTiFIV4/SKSEk9kbD+Ti+SWZ4Q; Path=/', done)
       })
-
     })
   })
 })

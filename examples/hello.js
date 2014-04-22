@@ -15,15 +15,16 @@ app.use(function *() {
   // this.body = new Buffer('download me')
 
   // json
-  // this.body = {
-  //   hello: 'world'
-  // }
+  this.body = {
+    hello: 'world'
+  }
+  throw new Error('q')
 
   // stream
   // this.body = require('fs').createReadStream(__filename)
 })
 
-app.error(function(err) {
+app.on('error', function(err) {
   console.error(err)
 })
 

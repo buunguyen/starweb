@@ -13,7 +13,7 @@ describe('Session middleware', function(){
     app = starweb()
     app.use(app.cookies('secret'))
     app.use(app.session())
-    app.error(function(err) {
+    app.on('error', function(err) {
       console.log(err.stack)
     })
   })

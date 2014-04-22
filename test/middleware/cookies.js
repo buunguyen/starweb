@@ -10,7 +10,7 @@ describe('Cookies middleware', function(){
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
-    app.error(function(err) {
+    app.on('error', function(err) {
       console.log(err.stack)
     })
   })
