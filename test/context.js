@@ -5,15 +5,49 @@ sinon   = require('sinon')
 request = require('supertest')
 
 describe('Context', function(){
-  var app
+  var app, spy, ERR = new Error()
 
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
-    app.on('error', function(err) {
-      console.log(err.stack)
+    spy = sinon.spy()
+  })
+
+  it('notifies when done once', function(done) {
+    app.use(function *() {
+      this.on('done', spy)
+    })
+    request(app.run()).get('/').end(function(err) {
+      expect(spy.callCount).to.equal(1)
+      done(err)
     })
   })
+
+  it('notifies when done with error', function(done) {
+    app.use(function *(next) {
+      this.on('done', spy)
+      yield next
+    })
+    app.use(function *() {
+      throw ERR
+    })
+    request(app.run()).get('/').end(function(err) {
+      expect(spy.withArgs(ERR).callCount).to.equal(1)
+      done(err)
+    })
+  })
+
+  it('fires application error when done with error', function(done) {
+    app.on('error', spy) 
+    app.use(function *() {
+      throw ERR
+    })   
+    request(app.run()).get('/').end(function(err) {
+      expect(spy.withArgs(ERR).callCount).to.equal(1)
+      done(err)
+    })
+  })
+
 
   describe('Cookie', function(done) {
     it('sets cookie', function(done) {
