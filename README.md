@@ -1,16 +1,16 @@
 starweb
 =======
 
-Reference implementation of a simple [koa](https://github.com/koajs/koa)-inspired web framework. Generator execution is powered by [starx](https://github.com/buunguyen/starx). This is a learning project and not intended to be used in production.
+Reference implementation of a simple [koa](https://github.com/koajs/koa)-inspired web framework. Generator execution is powered by [starx](https://github.com/buunguyen/starx). This is a learning project and not intended to be used in production (at least in its current stage).
 
 Todo
 
-* Test for existing features 
+* Test for existing features: in progress 
 * Cookie: done
-* Session
+* Session: done
 * Static
-* Query/body/JSON
 * Route
+* Query/body/JSON
 * Cache
 * Upload
 * Method override
