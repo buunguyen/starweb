@@ -1,10 +1,4 @@
-starweb = require('../../lib/app')
-helper  = require('../helper')
-expect  = require('chai').expect
-assert  = require('chai').assert
-sinon   = require('sinon')
-request = require('supertest')
-starx   = require('starx')
+require('../helper')
 
 describe('Session middleware', function(){
   var app

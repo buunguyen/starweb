@@ -1,9 +1,4 @@
-starweb = require('../../lib/app')
-expect  = require('chai').expect
-assert  = require('chai').assert
-request = require('supertest')
-helper  = require('../helper')
-starx   = require('starx')
+require('../helper')
 
 describe('Cookies middleware', function(){
   var app

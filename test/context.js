@@ -1,8 +1,4 @@
-starweb = require('../lib/app')
-expect  = require('chai').expect
-assert  = require('chai').assert
-sinon   = require('sinon')
-request = require('supertest')
+require('./helper')
 
 describe('Context', function(){
   var app, spy, ERR = new Error()

@@ -1,5 +1,5 @@
+require('./helper')
 proxy = require('../lib/proxy')
-expect  = require('chai').expect
 
 describe('Proxy', function(){
   it('proxies', function() {

@@ -1,5 +1,9 @@
-request = require('supertest')
-starx   = require('starx')
+global.starweb = require('../lib/app')
+global.starx   = require('starx')
+global.expect  = require('chai').expect
+global.assert  = require('chai').assert
+global.sinon   = require('sinon')
+global.request = require('supertest')
 
 global._catch = function(done, fn) {
   try {
@@ -10,7 +14,6 @@ global._catch = function(done, fn) {
 }
 
 global.YRequest = YRequest = {}
-
 ;['get', 'post', 'delete', 'head'].forEach(function(method) {
   YRequest[method] = starx.yieldable(function(server, path, opts, cb) {
     if (typeof opts === 'function') cb = opts
