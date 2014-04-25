@@ -4,6 +4,10 @@ global.expect  = require('chai').expect
 global.assert  = require('chai').assert
 global.sinon   = require('sinon')
 global.request = require('supertest')
+global.fs      = require('fs')
+
+global.TOKEN = {}
+global.ERR = new Error()
 
 global._catch = function(done, fn) {
   try {

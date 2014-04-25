@@ -1,7 +1,7 @@
 require('./helper')
 
 describe('Context', function(){
-  var app, spy, ERR = new Error()
+  var app, spy
 
   beforeEach(function() {
     app = starweb()
