@@ -1,7 +1,7 @@
 {
   "name": "starweb",
-  "version": "0.0.0",
-  "description": "starweb =======",
+  "version": "0.0.1",
+  "description": "Generator-based web framework",
   "main": "lib/app.js",
   "scripts": {
     "test": "make"
