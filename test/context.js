@@ -17,7 +17,7 @@ describe('Context', function(){
     app.use(function *() {
       this.on('done', spy)
     })
-    request(app.run()).get('/').end(function(err) {
+    request(app.run()).get('/').expect(200).end(function(err) {
       expect(spy.callCount).to.equal(1)
       done(err)
     })
@@ -31,7 +31,7 @@ describe('Context', function(){
     app.use(function *() {
       throw ERR
     })
-    request(app.run()).get('/').end(function(err) {
+    request(app.run()).get('/').expect(500).end(function(err) {
       expect(spy.withArgs(ERR).callCount).to.equal(1)
       done(err)
     })
@@ -42,12 +42,22 @@ describe('Context', function(){
     app.use(function *() {
       throw ERR
     })   
-    request(app.run()).get('/').end(function(err) {
+    request(app.run()).get('/').expect(500).end(function(err) {
       expect(spy.withArgs(ERR).callCount).to.equal(1)
       done(err)
     })
   })
 
+  it('ends request with error on throw', function(done) {
+    app.on('error', spy) 
+    app.use(function *() {
+      this.throw(400, ERR);
+    })   
+    request(app.run()).get('/').expect(400).end(function(err) {
+      expect(spy.withArgs(ERR).callCount).to.equal(1)
+      done(err)
+    })
+  })
 
   describe('Cookie', function(done) {
     it('sets cookie', function(done) {
