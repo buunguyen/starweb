@@ -102,25 +102,27 @@ describe('App', function(){
       })
     })
 
-    // it('also supports async operation unstructured error', function(done) {
-    // // TODO: apparently, it doesn't :(, blame starx
-    //   app.use(function *(next) {
-    //     var badAsyncOp = function(cb) {
-    //       setTimeout(function() {
-    //         throw ERR
-    //       }, 50)
-    //     }
-    //     try {
-    //       yield badAsyncOp
-    //     } catch (e) { spy(e) }
-    //     yield next
-    //   })
-    //   request(app.run()).get('/').expect(200).end(function(err) {
-    //     expect(spy.withArgs(ERR).callCount).to.equal(1)
-    //     done(err)
-    //   })
-    // })
-  })
+  //   it('also supports async operation unstructured error', function(done) {
+  //     // apparently not, blame starx
+  //     app.use(function *(next) {
+  //       var badAsyncOp = function(cb) {
+  //         setTimeout(function() {
+  //           throw ERR
+  //         }, 50)
+  //       }
+  //       try {
+  //         yield badAsyncOp
+  //       } catch (e) {
+  //         spy(e) 
+  //       }
+  //       yield next
+  //     })
+  //     request(app.run()).get('/').expect(200).end(function(err) {
+  //       expect(spy.withArgs(ERR).callCount).to.equal(1)
+  //       done(err)
+  //     })
+  //   })
+  // })
 
   describe('Content Type', function() {
     it('supports text/plain', function(done) {
