@@ -102,27 +102,58 @@ describe('App', function(){
       })
     })
 
-  //   it('also supports async operation unstructured error', function(done) {
-  //     // apparently not, blame starx
-  //     app.use(function *(next) {
-  //       var badAsyncOp = function(cb) {
-  //         setTimeout(function() {
-  //           throw ERR
-  //         }, 50)
-  //       }
-  //       try {
-  //         yield badAsyncOp
-  //       } catch (e) {
-  //         spy(e) 
-  //       }
-  //       yield next
-  //     })
-  //     request(app.run()).get('/').expect(200).end(function(err) {
-  //       expect(spy.withArgs(ERR).callCount).to.equal(1)
-  //       done(err)
-  //     })
-  //   })
-  // })
+    it('supports unstructured error', function(done) {
+      app.use(function *(next) {
+        var badAsyncOp = function(cb) {
+          throw ERR
+        }
+        yield badAsyncOp
+      })
+      request(app.run()).get('/').expect(500).end(done)
+    })
+
+    it('supports async unstructured error', function(done) {
+      app.use(function *(next) {
+        var badAsyncOp = function(cb) {
+          setTimeout(function() {
+            throw ERR
+          }, 50)
+        }
+        yield badAsyncOp
+      })
+      request(app.run()).get('/').expect(500).end(done)
+    })
+
+    it('the above is actually injected back into the iterator', function(done) {
+      app.use(function *(next) {
+        try {
+          yield function(cb) {
+            throw ERR
+          }
+        } catch (e) {
+          expect(e).to.equal(ERR)
+          yield next
+        }
+      })
+      request(app.run()).get('/').expect(200).end(done)
+    })
+
+    it('so is the async error', function(done) {
+      app.use(function *(next) {
+        try {
+          yield function(cb) {
+            setTimeout(function() {
+              throw ERR
+            }, 50)
+          }
+        } catch (e) {
+          expect(e).to.equal(ERR)
+          yield next
+        }
+      })
+      request(app.run()).get('/').expect(200).end(done)
+    })
+  })
 
   describe('Content Type', function() {
     it('supports text/plain', function(done) {
@@ -192,5 +223,4 @@ describe('App', function(){
         .end(done)
     })
   })
-
 })
