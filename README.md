@@ -1,9 +1,9 @@
 starweb
 =======
 
-Simple generator-based web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx). This is a learning project and not intended to be used in production (at least in its current stage).
+Simple generator-based web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx). 
 
-Run test
+### Run test
 
 * make
 
@@ -24,20 +24,22 @@ app.use(function *() {
 app.run(8000)
 ```
 
-Todo
+### Run test
 
-* Test for existing features: in progress 
-* Cookie: done
-* Session: done
-* Static
-* Route
-* Query/body/JSON
-* Cache
-* Upload
-* Method override
-* ETag, fresh...
-* Auth ?
-* Cors
-* SSL support
-* Cluster
-* Demo app
+- [x] Test for existing features: in progress 
+- [x] Cookie: done
+- [x] Session: done
+- [ ] Static
+- [ ] Route
+- [ ] Query/body/JSON
+- [ ] Cache
+- [ ] Upload
+- [ ] Method override
+- [ ] ETag, fresh...
+- [ ] Auth ?
+- [ ] Cors
+- [ ] SSL support
+- [ ] Cluster
+- [ ] Non-trivial demo
+
+Contribution is welcome!
