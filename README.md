@@ -1,13 +1,15 @@
 starweb
 =======
 
-Simple generator-based web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx). 
+Simple [generator-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx). 
 
 ### Run test
 
-* make
+```
+make
+```
 
-Examples
+### Example
 
 ```javascript
 starx = require('starx')
@@ -24,9 +26,8 @@ app.use(function *() {
 app.run(8000)
 ```
 
-### Run test
+### Todo
 
-- [x] Test for existing features: in progress 
 - [x] Cookie: done
 - [x] Session: done
 - [ ] Static
