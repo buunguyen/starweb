@@ -1,7 +1,7 @@
 starweb
 =======
 
-Simple [generator-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx). 
+Simple [generator-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) web framework inspired by [koa](https://github.com/koajs/koa). Generator execution is powered by [starx](https://github.com/buunguyen/starx).
 
 ### Run test
 
@@ -31,7 +31,8 @@ app.run(8000)
 - [x] Cookie: done
 - [x] Session: done
 - [ ] Static
-- [ ] Route
+- [ ] Router
+- [ ] Template/view engine
 - [ ] Query/body/JSON
 - [ ] Cache
 - [ ] Upload

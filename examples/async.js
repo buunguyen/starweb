@@ -12,6 +12,5 @@ app.use(function *() {
 })
 
 port = process.argv[2] || 8000
-console.log("HER")
 app.run(port)
 console.log('Server is running at port ' + port)
