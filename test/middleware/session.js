@@ -7,6 +7,10 @@ describe('Session middleware', function(){
     app = starweb()
     app.use(app.cookies('secret'))
     app.use(app.session())
+    app.use(function *(next) {
+      this.status = 200
+      yield next
+    })
     app.on('error', function(err) {
       console.log(err.stack)
     })

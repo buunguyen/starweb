@@ -5,6 +5,10 @@ describe('Cookies middleware', function(){
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
+    app.use(function *(next) {
+      this.status = 200
+      yield next
+    })
     app.on('error', function(err) {
       console.log(err.stack)
     })
@@ -48,6 +52,10 @@ describe('Cookies middleware', function(){
     var app
     beforeEach(function() {
       app = starweb()
+      app.use(function *(next) {
+        this.status = 200
+        yield next
+      })
       app.use(app.cookies('secret'))
     })
 

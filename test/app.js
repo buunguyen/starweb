@@ -13,6 +13,13 @@ describe('App', function(){
   })
 
   describe('Middleware', function() {
+    beforeEach(function() {
+      app.use(function *(next) {
+        this.status = 200
+        yield next
+      })
+    })
+
     it('executes middleware', function(done) {
       for (var i = 0; i < 10; i++)
         app.use(function *(next) {
@@ -155,7 +162,13 @@ describe('App', function(){
     })
   })
 
-  describe('Content Type', function() {
+  describe('Status & Content Type', function() {
+    it('returns 404 if body and status is empty', function(done) {
+      request(app.run()).get('/')
+        .expect(404)
+        .end(done)
+    })
+
     it('supports text/plain', function(done) {
       app.use(function *(next) {
         this.body = 'text'

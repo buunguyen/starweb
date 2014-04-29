@@ -6,6 +6,10 @@ describe('Context', function(){
   beforeEach(function() {
     app = starweb()
     app.use(app.cookies())
+    app.use(function *(next) {
+      this.status = 200
+      yield next
+    })
     spy = sinon.spy()
   })
 
