@@ -18,7 +18,6 @@ app.use(function *() {
   this.body = {
     hello: 'world'
   }
-  throw new Error('q')
 
   // stream
   // this.body = require('fs').createReadStream(__filename)
@@ -28,4 +27,6 @@ app.on('error', function(err) {
   console.error(err)
 })
 
-app.run(8000)
+port = process.argv[2] || 8000
+app.run(port)
+console.log('Server is running at port ' + port)
