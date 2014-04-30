@@ -29,11 +29,13 @@ app.run(8000)
 ### Todo
 
 - [x] Cookie
-- [x] Session
-- [x] Session store support
+- [x] Session 
+- [x] Session store
 - [x] Static
 - [ ] Router
-- [ ] Template/view engine
+- [ ] View engine
+- [ ] EJS integration
+- [ ] Jade integration
 - [ ] Query/body/JSON
 - [ ] Cache
 - [ ] Upload
