@@ -3,6 +3,7 @@ app     = starweb()
 
 app.use(app.logger())
 app.use(app.favicon('favicon.ico'))
+app.use(app.static(__dirname))
 
 app.use(function *() {
   // text

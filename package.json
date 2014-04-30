@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/buunguyen/starweb",
   "dependencies": {
-    "starx": "~0.1.7"
+    "starx": "~0.1.7",
+    "mime": "!1.2.11"
   },
   "devDependencies": {
     "sinon": "~1.9.1",
