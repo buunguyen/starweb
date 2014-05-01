@@ -8,7 +8,7 @@ describe('Router middleware', function(){
     app.use(app.router())
   })
 
-  describe('Match', function() {
+  describe('Matching', function() {
     ['get', 'post', 'put', 'del', 'options'].forEach(function(method) {
       it('matches exact for ' + method.toUpperCase(), function(done) {
         app[method]('/api/v1/path', function *() {
@@ -88,6 +88,16 @@ describe('Router middleware', function(){
       request(app.run())
         .get('/api/v1/route')
         .expect(404, done)
+    })
+
+    it('automatically invokes other middleware', function(done) {
+      app.get('/api/v1/route', function *() {})
+      app.use(function *() {
+        this.status = 200
+      })
+      request(app.run())
+        .get('/api/v1/route')
+        .expect(200, done)
     })
   })
 
