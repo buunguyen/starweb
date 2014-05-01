@@ -7,13 +7,15 @@ describe('Router middleware', function(){
     app.use(router = app.router())
   })
 
-  it('matches exact', function(done) {
-    app.get('/api/v1/path', function *() {
-      this.body = 'success'
+  ;['get', 'post', 'put', 'del', 'options'].forEach(function(method) {
+    it('matches exact for ' + method.toUpperCase(), function(done) {
+      app[method]('/api/v1/path', function *() {
+        this.body = 'success'
+      })
+      request(app.run())
+        [method]('/api/v1/path')
+        .expect(200, 'success', done)
     })
-    request(app.run())
-      .get('/api/v1/path')
-      .expect(200, 'success', done)
   })
 
   it('does not match extra stuff', function(done) {
@@ -76,18 +78,22 @@ describe('Router middleware', function(){
       .expect(200, 'first', done)
   })
 
-  // it('allows a match to invoke the next match', function(done) {
-  //   app.get('/api/v1/:param', function *(next) {
-  //     expect(this.params.param).to.equal('thing')
-  //     yield next
-  //   })
-  //   app.get('/api/v1/thing', function *() {
-  //     expect(this.params.param).to.be.null
-  //     this.body = 'success'
-  //   })
-  //   request(app.run())
-  //     .get('/api/v1/thing')
-  //     .expect(200, 'success', done)
-  // })
-
+  it('allows a match to invoke the next match', function(done) {
+    app.get('/api/v1/:param', function *(next) {
+      expect(this.params.param).to.equal('thing')
+      yield next
+    })
+    app.get('/api/v1/:param', function *(next) {
+      expect(this.params.param).to.equal('thing')
+      yield next
+      this.body += ' again'
+    })
+    app.get('/api/v1/thing', function *() {
+      expect(this.params.param).to.be.undefined
+      this.body = 'success'
+    })
+    request(app.run())
+      .get('/api/v1/thing')
+      .expect(200, 'success again', done)
+  })
 })
