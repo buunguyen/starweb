@@ -1,7 +1,7 @@
 require('./helper')
 utils = require('../lib/utils')
 
-describe('utils', function() {
+describe('Utils', function() {
   describe('.proxy()', function() {
     var spy, src
 

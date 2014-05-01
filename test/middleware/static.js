@@ -4,7 +4,6 @@ describe('Static middleware', function(){
   var app
   beforeEach(function() {
     app = starweb()
-    app.use(app.logger())
   })
 
   it('serves from \'public\' by default', function(done) {
