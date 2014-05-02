@@ -1,7 +1,7 @@
 starweb
 =======
 
-Simple [generator-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) web framework inspired by [koa](https://github.com/koajs/koa) and developed from the ground up. The framework comes bundled with essential middleware whose development status is below.
+Simple [generator-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) web framework inspired by [koa](https://github.com/koajs/koa) and developed from the ground up. The framework comes bundled with essential middleware.
 
 ### Run test
 
@@ -34,7 +34,7 @@ app.run(8000)
 - [x] Static
 - [x] Router
 - [x] Basic authentication
-- [ ] View engine
+- [x] View engine
 - [ ] EJS integration
 - [ ] Jade integration
 - [ ] Query/body/JSON

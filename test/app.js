@@ -236,4 +236,55 @@ describe('App', function(){
         .end(done)
     })
   })
+
+  describe('Views & View Engines', function() {
+    describe('HTML', function() {
+      beforeEach(function() {
+        app.views('./test/views', app.html())
+      })
+
+      it('supports html view engine', function(done) {
+        app.use(function *(next) {
+          this.body = yield this.render('index')
+        })
+        request(app.run()).get('/')
+          .expect(200, 'html view')
+          .end(done)
+      })   
+    })
+
+    describe('Jade', function() {
+      beforeEach(function() {
+        app.views('./test/views', app.jade())
+      })
+
+      it('supports jade view engine', function(done) {
+        app.use(function *(next) {
+          this.body = yield this.render('index', {
+            name: 'starweb'
+          })
+        })
+        request(app.run()).get('/')
+          .expect(200, 'starweb')
+          .end(done)
+      })   
+    })
+
+    describe('EJS', function() {
+      beforeEach(function() {
+        app.views('./test/views', app.ejs())
+      })
+
+      it('supports ejs view engine', function(done) {
+        app.use(function *(next) {
+          this.body = yield this.render('index', {
+            name: 'starweb'
+          })
+        })
+        request(app.run()).get('/')
+          .expect(200, 'starweb')
+          .end(done)
+      })   
+    })
+  })
 })

@@ -4,6 +4,9 @@ describe('Static middleware', function(){
   var app
   beforeEach(function() {
     app = starweb()
+    app.on('error', function(err) {
+      console.error(err)
+    })
   })
 
   it('serves from \'public\' by default', function(done) {
@@ -26,27 +29,19 @@ describe('Static middleware', function(){
   })
 
   it('overrides default root', function(done) {
-    app.use(app.static('./'))
+    app.use(app.static('./test/middleware'))
     request(app.run())
-      .get('/test/middleware/static.js')
+      .get('/static.js')
       .expect(200)
       .expect('Content-Type', 'application/javascript')
       .end(done)
   })
 
   it('tries \'index.html\' if directory', function(done) {
-    app.use(app.static('./'))
+    app.use(app.static('./test/views'))
     request(app.run())
-      .get('/test/middleware/')
+      .get('/')
       .expect(200)
-      .expect('Content-Type', 'text/html')
-      .end(function(err) {
-        if (err) return done(err)
-        request(app.run())
-          .get('/test/middleware')
-          .expect(200)
-          .expect('Content-Type', 'text/html')
-          .end(done)
-      })
+      .expect('Content-Type', 'text/html', done)
   })
 })
