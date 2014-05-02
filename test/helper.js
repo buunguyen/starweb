@@ -5,6 +5,7 @@ global.assert  = require('chai').assert
 global.sinon   = require('sinon')
 global.request = require('supertest')
 global.fs      = require('fs')
+global.path    = require('path')
 
 global.TOKEN = {}
 global.ERR = new Error()

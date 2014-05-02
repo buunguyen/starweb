@@ -238,6 +238,36 @@ describe('App', function(){
   })
 
   describe('Views & View Engines', function() {
+    describe('General', function() {
+      it('throws when view is not found', function(done) {
+        app.use(function *(next) {
+          yield this.render('notfound')
+        })
+        request(app.run()).get('/')
+          .expect(500)
+          .end(done)
+      }) 
+
+      it('throws when no view engine is registered', function() {
+        try {
+          app.views('./test/views')
+          assert(false)
+        } catch (e) {
+          assert(true)
+        }
+      }) 
+
+      it('registers a view engine', function() {
+        app.views(app.html())
+        expect(app.viewEngines.length).to.equal(1)
+      })     
+
+      it('registers multiple view engines at once', function() {
+        app.views([app.ejs(), app.html(), app.jade()])
+        expect(app.viewEngines.length).to.equal(3)
+      })   
+    })
+
     describe('HTML', function() {
       beforeEach(function() {
         app.views('./test/views', app.html())
@@ -286,5 +316,25 @@ describe('App', function(){
           .end(done)
       })   
     })
+    
+    describe('Custom view engine', function() {
+      it('supports custom view engine', function(done) {
+        app.views('./test/views', {
+          name: 'my',
+          render: function *(viewPath, locals) {
+            return yield utils.readFile(viewPath, 'utf8')
+          }
+        })
+
+        app.use(function *(next) {
+          this.body = yield this.render('index')
+        })
+
+        request(app.run()).get('/')
+          .expect(200, 'my view')
+          .end(done)
+      })   
+    })
+
   })
 })
